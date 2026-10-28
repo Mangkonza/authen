@@ -14,6 +14,7 @@ model menu {
   isBestSeller Boolean? @default(false)
   typeId       Int?
   type         type?    @relation(fields: [typeId], references: [typeId], map: "menu_ibfk_1")
+  ratings      rating[]
 
   @@index([typeId], map: "typeId")
 }
@@ -22,4 +23,28 @@ model type {
   typeId Int    @id @default(autoincrement())
   name   String @db.VarChar(100)
   menu   menu[]
+}
+
+// เพิ่มตาราง user ตามสไลด์หน้า 27
+enum Role {
+  admin
+  user
+}
+
+model user {
+  userName String @id @db.VarChar(50)
+  email    String @db.VarChar(50)
+  password String @db.VarChar(100)
+  role     Role   @default(user)
+}
+
+// เพิ่มตาราง rating สำหรับเก็บคะแนน 1-5 ของแต่ละเมนู
+model rating {
+  ratingId  Int      @id @default(autoincrement())
+  menuId    Int
+  score     Float
+  createdAt DateTime @default(now())
+  menu      menu     @relation(fields: [menuId], references: [menuId], onDelete: Cascade)
+
+  @@index([menuId])
 }

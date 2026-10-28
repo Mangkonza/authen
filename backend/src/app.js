@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const typeRoutes = require('./routes/typeRoutes');
 const menuRoutes = require('./routes/menuRoutes');
+const authenRoutes = require('./routes/authenRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -11,13 +13,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ผูก Routes ตามโจทย์ใน Todo
-app.use('/api/type', typeRoutes);
+// ผูก Routes
+app.use('/authen', authenRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/type', typeRoutes);
+app.use('/api/users', userRoutes);
 
-// เส้นทางทดสอบหน้าแรก
 app.get('/', (req, res) => {
-    res.send('Restaurant API is running...');
+  res.send('Restaurant API is running...');
 });
 
 module.exports = app;
